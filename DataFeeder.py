@@ -3,6 +3,8 @@ import urllib2
 from time import sleep
 from numpy import median
 import Adafruit_DHT as dht
+import MySQLdb
+import dbMod
 
 # Enter Your API key here
 myAPI = 'AWP4JDDGKBZ3ASBT' 
@@ -43,20 +45,23 @@ while True:
 		# If Reading is valid
 		if isinstance(humi, float) and isinstance(temp, float):
 			# Formatting to two decimal places
-			humi = '%.2f' % humi
-			temp = '%.2f' % temp
+			humiS = '%.2f' % humi
+			tempS = '%.2f' % temp
 
 			# Sending the data to thingspeak
-			conn = urllib2.urlopen(baseURL + '&field1=%s&field2=%s' % (temp, humi))
+			conn = urllib2.urlopen(baseURL + '&field1=%s&field2=%s' % (tempS, humiS))
 			print(conn.read())
 			# Closing the connection
 			conn.close()
-
+			# Insert to local database (mysql)
+			dbMod.Insert2db('suhuLabPetro',temp)
+			dbMod.Insert2db('klmbLabPetro',humi)
 		else:
 			print('Error')
 
-		# DHT22 requires 2 seconds to give a reading, so make sure to add delay of above 2 seconds.
-		# sleep(60)
+		# Wait 10 minutes (9 minute sleep 1 minute reading)
+		sleep(540)
 
 	except:
+		print('Error Try')
 		break
