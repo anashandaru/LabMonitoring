@@ -18,7 +18,7 @@ print(now)
 
 def getDataList(tabel,date):
     # Open Database COnnection
-    db = MySQLdb.connect('localhost','root','anashandaru','labbpptkg')
+    db = MySQLdb.connect('localhost','root','','labbpptkg')
     
     # Prepare a cursor object
     cursor = db.cursor()
@@ -50,8 +50,9 @@ def putData2table(lists,pdfO,column=2):
             pdfO.set_xy(40+minute/10*12,108+hour*5)
         else:
             pdfO.set_xy(113+minute/10*12,108+hour*5)
-
-        pdfO.cell(12,5,'%.2f'%(row[1]),border=1,fill=True, align ='L')
+        
+        pdfO.set_fill_color(255-hour%2*35)
+        pdfO.cell(12,5,'%.2f'%(row[1]),border=0,fill=True, align ='R')
     
 def plotGraph(lists,columnn=2):
     x = []
@@ -62,7 +63,7 @@ def plotGraph(lists,columnn=2):
         x.append(row[0])
         y.append(row[1])
         
-    plt.plot(x,y)
+    plt.plot(x,y,'-ok')
     
     if(columnn == 1):
         filename = 'suhu.png'
@@ -77,9 +78,6 @@ def plotGraph(lists,columnn=2):
     ax = plt.gca()
     #ax.xaxis.set_major_locator(mtpDate.HourLocator())
     ax.xaxis.set_major_formatter(mtpDate.DateFormatter('%H:%M'))
-    #ax.xaxis.set_minor_locator(mtpDate.MinuteLocator())
-    #ax.xaxis.set_minor_formatter(mtpDate.DateFormatter('%M'))
-    #fig.autofmt_xdate()
     fig.set_size_inches(7.2,4)
     fig.savefig(filename, dpi=100)
     plt.close()
@@ -104,7 +102,7 @@ form = 'REKAMAN PEMANTAUAN PENGENDALIAN KONDISI RUANGAN PENGUJIAN'
 
 pdf.set_left_margin(30)
 pdf.set_top_margin(20)
-pdf.set_fill_color(255,255,255)
+pdf.set_fill_color(255)
 
 pdf.add_page()
 
@@ -159,12 +157,12 @@ plotGraph(getDataList('klmbLabPetro',now.date()),2)
 pdf.set_xy(x+10,y+35)
 #pdf.cell(72,40,'Grafik Suhu',border=1, align ='C')
 pdf.image('suhu.png',w=72,h=40)
-pdf.rect(x+10,y+35,w=72,h=40)
+#pdf.rect(x+10,y+35,w=72,h=40)
 
 pdf.set_xy(x+11+72,y+35)
 #pdf.cell(72,40,'Grafik Kelembaban',border=1, align ='C')
 pdf.image('klmb.png',w=72,h=40)
-pdf.rect(x+11+72,y+35,w=72,h=40)
+#pdf.rect(x+11+72,y+35,w=72,h=40)
 
 
 
@@ -177,23 +175,33 @@ pdf.rect(x+11+72,y+35,w=72,h=40)
 ########### Table Header
 pdf.set_xy(x+10,y+78)
 pdf.set_font("Arial","",10)
-pdf.cell(72,5,u'Temperature (\N{DEGREE SIGN}C)',border=1, align ='C')
+pdf.set_fill_color(0,0,0)
+pdf.set_text_color(255)
+pdf.cell(72,5,u'Temperature (\N{DEGREE SIGN}C)',border=0,fill=1, align ='C')
 pdf.set_xy(x+11+72,y+78)
 pdf.set_font("Arial","",10)
-pdf.cell(72,5,u'Kelembaban (%)',border=1, align ='C')
+pdf.cell(72,5,u'Kelembaban (%)',border=0,fill=1, align ='C')
+pdf.set_text_color(0)
 
+pdf.set_font("Arial","",8)
 pdf.ln()
 pdf.set_xy(x+10,y+78+5)
 for i in range(0,6):
-    pdf.cell(12,5,str(i*10)+'m',border=1, align ='C')
+    pdf.cell(12,5,str(i*10)+'m',border=0, align ='R')
     
 pdf.set_xy(x+11+72,y+78+5)
 for i in range(0,6):
-    pdf.cell(12,5,str(i*10)+'m',border=1, align ='C')
+    pdf.cell(12,5,str(i*10)+'m',border=0, align ='R')
 
 pdf.set_xy(x,y+78+10)
 for i in range(0,24):
-    pdf.cell(10,5,str(i)+'h',border=1, align ='R')
+    
+    if(i%2==1):
+        pdf.set_fill_color(220)
+    else:
+        pdf.set_fill_color(255)
+      
+    pdf.cell(10,5,str(i)+'h',border=0, fill=1, align ='R')
     pdf.ln()
     
 ########### Table Data
@@ -202,7 +210,7 @@ putData2table(getDataList('klmbLabPetro',now.date()),pdf,2)
 
 
 #------------ Footer --------------#
-
+pdf.set_font("Arial","",10)
 pdf.set_xy(x,y+78+10+125)
 pdf.multi_cell(130,10,'Keterangan : \n\n\n\n',border=1, align ='L')
 pdf.set_xy(x+130,y+78+10+125)
