@@ -58,6 +58,7 @@ def plotGraph(lists,columnn=2):
     x = []
     y = []
     filename = ''
+    filepath = '/home/pi/Documents/gitRepo/LabMonitoring/'
     
     for row in lists:
         x.append(row[0])
@@ -79,7 +80,7 @@ def plotGraph(lists,columnn=2):
     #ax.xaxis.set_major_locator(mtpDate.HourLocator())
     ax.xaxis.set_major_formatter(mtpDate.DateFormatter('%H:%M'))
     fig.set_size_inches(7.2,4)
-    fig.savefig(filename, dpi=100)
+    fig.savefig(filepath+filename, dpi=100)
     plt.close()
 
 
@@ -156,12 +157,12 @@ plotGraph(getDataList('klmbLabPetro',now.date()),2)
 
 pdf.set_xy(x+10,y+35)
 #pdf.cell(72,40,'Grafik Suhu',border=1, align ='C')
-pdf.image('suhu.png',w=72,h=40)
+pdf.image('/home/pi/Documents/gitRepo/LabMonitoring/suhu.png',w=72,h=40)
 #pdf.rect(x+10,y+35,w=72,h=40)
 
 pdf.set_xy(x+11+72,y+35)
 #pdf.cell(72,40,'Grafik Kelembaban',border=1, align ='C')
-pdf.image('klmb.png',w=72,h=40)
+pdf.image('/home/pi/Documents/gitRepo/LabMonitoring/klmb.png',w=72,h=40)
 #pdf.rect(x+11+72,y+35,w=72,h=40)
 
 
