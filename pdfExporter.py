@@ -75,9 +75,9 @@ def plotGraph(lists,columnn=2):
     
     fig = plt.gcf()
     ax = plt.gca()
-    ax.xaxis.set_major_locator(mtpDate.HourLocator())
+    #ax.xaxis.set_major_locator(mtpDate.HourLocator())
     ax.xaxis.set_major_formatter(mtpDate.DateFormatter('%H:%M'))
-    ax.xaxis.set_minor_locator(mtpDate.MinuteLocator())
+    #ax.xaxis.set_minor_locator(mtpDate.MinuteLocator())
     #ax.xaxis.set_minor_formatter(mtpDate.DateFormatter('%M'))
     #fig.autofmt_xdate()
     fig.set_size_inches(7.2,4)
