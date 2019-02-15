@@ -18,7 +18,7 @@ print(now)
 
 def getDataList(tabel,date):
     # Open Database COnnection
-    db = MySQLdb.connect('localhost','root','','labbpptkg')
+    db = MySQLdb.connect('localhost','root','anashandaru','labbpptkg')
     
     # Prepare a cursor object
     cursor = db.cursor()
@@ -217,4 +217,4 @@ pdf.set_xy(x+130,y+78+10+125)
 pdf.multi_cell(30,10,'Paraf \n\n\n\n',border=1, align ='C')
 
 
-pdf.output(now.strftime('%Y-%m-%d') + '.pdf','')
+pdf.output('./labpetro/' + now.strftime('%Y-%m-%d') + '.pdf','')
