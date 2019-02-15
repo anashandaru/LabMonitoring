@@ -217,4 +217,4 @@ pdf.set_xy(x+130,y+78+10+125)
 pdf.multi_cell(30,10,'Paraf \n\n\n\n',border=1, align ='C')
 
 
-pdf.output('./labpetro/' + now.strftime('%Y-%m-%d') + '.pdf','')
+pdf.output('/home/pi/Documents/gitRepo/LabMonitoring/labpetro/' + now.strftime('%Y-%m-%d') + '.pdf','')
