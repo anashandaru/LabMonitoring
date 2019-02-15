@@ -8,13 +8,16 @@ Created on Wed Feb 06 11:44:09 2019
 import datetime
 from fpdf import FPDF
 import MySQLdb
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-now = datetime.datetime.now()
+now = datetime.datetime.now() - datetime.timedelta(days=1)
+print(now)
 
 def getDataList(tabel,date):
     # Open Database COnnection
-    db = MySQLdb.connect('localhost','root','','labbpptkg')
+    db = MySQLdb.connect('localhost','root','anashandaru','labbpptkg')
     
     # Prepare a cursor object
     cursor = db.cursor()
@@ -47,7 +50,7 @@ def putData2table(lists,pdfO,column=2):
         else:
             pdfO.set_xy(113+minute/10*12,108+hour*5)
 
-        pdfO.cell(12,5,'%.2f'%(row[1]),border=1,fill=True, align ='C')
+        pdfO.cell(12,5,'%.2f'%(row[1]),border=1,fill=True, align ='L')
     
 def plotGraph(lists,columnn=2):
     x = []
@@ -71,7 +74,7 @@ def plotGraph(lists,columnn=2):
     fig.autofmt_xdate()
     fig.set_size_inches(7.2,4)
     fig.savefig(filename, dpi=100)
-    plt.show()
+    plt.cla()
 
 
 pdf = FPDF(format='A4')
@@ -198,4 +201,4 @@ pdf.set_xy(x+130,y+78+10+125)
 pdf.multi_cell(30,10,'Paraf \n\n\n\n',border=1, align ='C')
 
 
-pdf.output('trial.pdf','')
+pdf.output(now.strftime('%Y-%m-%d') + '.pdf','')

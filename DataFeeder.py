@@ -60,7 +60,7 @@ while True:
 			print('Error')
 
 		# Wait 10 minutes (9 minute sleep 1 minute reading)
-		sleep(540)
+		sleep(530)
 
 	except:
 		print('Error Try')
