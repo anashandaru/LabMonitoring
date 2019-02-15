@@ -11,6 +11,7 @@ import MySQLdb
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.dates as mtpDate
 
 now = datetime.datetime.now() - datetime.timedelta(days=1)
 print(now)
@@ -65,16 +66,23 @@ def plotGraph(lists,columnn=2):
     
     if(columnn == 1):
         filename = 'suhu.png'
+        plt.title('Temperatur')
         plt.ylabel(u'Temperature (\N{DEGREE SIGN}C)')
     else:
         filename = 'klmb.png'
+        plt.title('Kelembaban')
         plt.ylabel('Kelembababan (%)')
-
+    
     fig = plt.gcf()
-    fig.autofmt_xdate()
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(mtpDate.HourLocator())
+    ax.xaxis.set_major_formatter(mtpDate.DateFormatter('%H:%M'))
+    ax.xaxis.set_minor_locator(mtpDate.MinuteLocator())
+    #ax.xaxis.set_minor_formatter(mtpDate.DateFormatter('%M'))
+    #fig.autofmt_xdate()
     fig.set_size_inches(7.2,4)
     fig.savefig(filename, dpi=100)
-    plt.cla()
+    plt.close()
 
 
 pdf = FPDF(format='A4')
