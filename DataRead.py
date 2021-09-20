@@ -6,7 +6,7 @@ import adafruit_dht
 dhtDevice = adafruit_dht.DHT22(board.D14)
 
 def DHT22_data():
-	while True:
+	for i in range(10):
 		try:
 			# Reading from DHT22 and storing the temperature and humidity
 			temp = dhtDevice.temperature
@@ -16,6 +16,7 @@ def DHT22_data():
 			# Errors happen fairly often, DHT's are hard to read, just keep going
 			sleep(2.0)
 			continue
+	return (0, 0)
 
 def GetMedianOf(npts = 5):
 	# Get median of npts DHT22  reading (default get 12 npts for 60 second)
