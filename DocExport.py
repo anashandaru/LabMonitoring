@@ -13,9 +13,10 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mtpDate
 from Database import ReadFromDB
 
+LabName = 'Laboratorium Air'
 thepath = '/home/pi/gitrepo/LabMonitoring/'
-# now = datetime.datetime.now() - datetime.timedelta(days=1)
-now = datetime.datetime.now()
+now = datetime.datetime.now() - datetime.timedelta(days=1)
+# now = datetime.datetime.now()
 print(now)
 
 def getDataList(table,date):
@@ -107,7 +108,7 @@ pdf = FPDF(format='A4')
 
 BPPTKG = 'BALAI PENYELIDIKAN DAN PENGEMBANGAN\n TEKNOLOGI KEBENCANAAN GEOLOGI\n'
 PL = 'LABORATORIUM GEOKIMIA'
-Lab = 'Laboratorium Petrografi'
+Lab = LabName
 
 info = 'No. Dokumen\nTanggal\nHalaman\nRevisi'
 
@@ -226,7 +227,7 @@ for i,row in enumerate(data):
         pdf.cell(20,5,u'{}'.format(row[2]),border=1,fill=0, align ='R')
         pdf.set_xy(x+10+32+20,y+78+5+i*5)
         pdf.cell(20,5,u'{}'.format(row[1]),border=1,fill=0, align ='R')
-    else:
+    elif i<48:
         pdf.set_xy(x+11+72,y+78+5+(i-24)*5)
         pdf.set_font("Arial","",10)
         pdf.cell(32,5,row[0].strftime('%H:%M:%S'),border=1,fill=0, align ='C')
@@ -290,12 +291,12 @@ for i,row in enumerate(data):
 # putData2table(getDataList('klmbLabPetro',now.date()),pdf,2)
 
 
-#------------ Footer --------------#
-pdf.set_font("Arial","",10)
-pdf.set_xy(x,y+78+10+125)
-pdf.multi_cell(130,10,'Keterangan : \n\n\n\n',border=1, align ='L')
-pdf.set_xy(x+130,y+78+10+125)
-pdf.multi_cell(30,10,'Paraf \n\n\n\n',border=1, align ='C')
+# #------------ Footer --------------#
+# pdf.set_font("Arial","",10)
+# pdf.set_xy(x,y+78+10+125)
+# pdf.multi_cell(130,10,'Keterangan : \n\n\n\n',border=1, align ='L')
+# pdf.set_xy(x+130,y+78+10+125)
+# pdf.multi_cell(30,10,'Paraf \n\n\n\n',border=1, align ='C')
 
 
 pdf.output(thepath+'pdfs/' + now.strftime('%Y-%m-%d') + '.pdf','')
