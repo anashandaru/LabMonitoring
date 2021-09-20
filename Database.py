@@ -25,18 +25,28 @@ def InsertToDB(humi, temp):
         if con:
             con.close()
             print('Database Connection Close')
+        return datetime.timestamp(now)*1000
 
-def ReadFromDB(starttime, endtime):
+def ReadFromDB(starttime=None, endtime=None):
     try:
         con = sqlite3.connect('measurement.db',
                                            detect_types=sqlite3.PARSE_DECLTYPES |
                                                         sqlite3.PARSE_COLNAMES)
         cur = con.cursor()
         print("Connected to SQLite")
-        sqlite_select_query = """SELECT * from measurement 
-                                 WHERE readingTime >= ?
-                                 AND readingTIme <= ?"""
-        cur.execute(sqlite_select_query,(starttime, endtime))
+        sqlite_select_query = "SELECT * from measurement"
+        sqlite_select_query += " WHERE readingTime >= ?" if(starttime) else ' '
+        sqlite_select_query += " AND readingTIme <= ?" if(endtime) else ' '
+        
+        if(starttime and endtime):
+            cur.execute(sqlite_select_query,(starttime, endtime))
+        elif(starttime):
+            cur.execute(sqlite_select_query,(starttime,))
+        elif(endtime):
+            cur.execute(sqlite_select_query,(endtime,))
+        else:
+            cur.execute(sqlite_select_query)
+
         records = cur.fetchall()
         for row in records:
             print('{} {} {}'.format(row[0],row[1],row[2]))
