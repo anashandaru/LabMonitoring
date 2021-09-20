@@ -25,7 +25,7 @@ def InsertToDB(humi, temp):
         if con:
             con.close()
             print('Database Connection Close')
-        return datetime.timestamp(now)*1000
+        return int(datetime.timestamp(now)*1000))
 
 def ReadFromDB(starttime=None, endtime=None):
     try:
