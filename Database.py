@@ -1,11 +1,13 @@
 import sqlite3
 from datetime import datetime
 
+dbPath = '/home/pi/gitrepo/LabMonitoring/measurement.db'
+
 def InsertToDB(humi, temp):
     try:
-        con = sqlite3.connect('/home/pi/gitrepo/LabMonitoring/measurement.db',
-                                           detect_types=sqlite3.PARSE_DECLTYPES |
-                                                        sqlite3.PARSE_COLNAMES)
+        con = sqlite3.connect(dbPath,
+                              detect_types=sqlite3.PARSE_DECLTYPES |
+                              sqlite3.PARSE_COLNAMES)
         cur = con.cursor()
         print("Connected to SQLite")
         cur.execute('''CREATE TABLE IF NOT EXISTS measurement
@@ -25,13 +27,13 @@ def InsertToDB(humi, temp):
         if con:
             con.close()
             print('Database Connection Close')
-        return int(datetime.timestamp(now)*1000))
+        return int(datetime.timestamp(now)*1000)
 
 def ReadFromDB(starttime=None, endtime=None):
     try:
-        con = sqlite3.connect('measurement.db',
-                                           detect_types=sqlite3.PARSE_DECLTYPES |
-                                                        sqlite3.PARSE_COLNAMES)
+        con = sqlite3.connect(dbPath,
+                              detect_types=sqlite3.PARSE_DECLTYPES |
+                              sqlite3.PARSE_COLNAMES)
         cur = con.cursor()
         print("Connected to SQLite")
         sqlite_select_query = "SELECT * from measurement"
