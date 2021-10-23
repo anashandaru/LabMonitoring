@@ -3,7 +3,7 @@ from datetime import datetime
 
 dbPath = '/home/pi/gitrepo/LabMonitoring/measurement.db'
 
-def InsertToDB(humi, temp):
+def InsertToDB(humi, temp, timestamp=None):
     try:
         con = sqlite3.connect(dbPath,
                               detect_types=sqlite3.PARSE_DECLTYPES |
@@ -15,7 +15,7 @@ def InsertToDB(humi, temp):
         sqlite_insert_with_param = """INSERT INTO 'measurement'
                           ('readingTime', 'humi', 'temp') 
                           VALUES (?, ?, ?);"""
-        now = datetime.now()
+        now = datetime.fromtimestamp(timestamp) if timestamp else datetime.now()
         data_tuple = (now,humi,temp)
         cur.execute(sqlite_insert_with_param,data_tuple)
         con.commit()

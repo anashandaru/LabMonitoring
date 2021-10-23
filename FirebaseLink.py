@@ -1,6 +1,6 @@
 import pyrebase
 from datetime import datetime
-from config import firebaseConfig, labName
+from config import firebaseConfig, username, password, labName
 from Database import ReadFromDB
 
 def noquote(s):
@@ -15,15 +15,20 @@ pyrebase.pyrebase.quote = noquote
 # }
 
 def upload(humi, temp, timestamp, lab=labName):
+    # try:
     fb = pyrebase.initialize_app(firebaseConfig)
+    auth = fb.auth()
+    user = auth.sign_in_with_email_and_password(username, password)
     db = fb.database()
     data = {'lab':lab,
-            'humi':humi,
-            'temp':temp,
-            'timestamp':timestamp
-            }
-    reply = db.child('measurements').push(data)
-    return reply
+        'humi':humi,
+        'temp':temp,
+        'timestamp':timestamp
+        }
+    reply = db.child('measurements').push(data, user['idToken'])
+    # except:
+        # reply = None
+    # return reply
 
 def backup():
     records = ReadFromDB()

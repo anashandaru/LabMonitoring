@@ -1,4 +1,6 @@
 labName = 'Lab Batuan'
+username = "anashandaru256@gmail.com"
+password = "anashandaru"
 
 firebaseConfig ={
     "apiKey":"AIzaSyCsSxN_pAQbl_ePNSyRY8oJhx_mtvTAA3o",

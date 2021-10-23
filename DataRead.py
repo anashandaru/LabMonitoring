@@ -1,11 +1,10 @@
 from time import sleep
 from numpy import median
-import board
-import adafruit_dht
+# import board
+# import adafruit_dht
+# dhtDevice = adafruit_dht.DHT22(board.D14)
 
-dhtDevice = adafruit_dht.DHT22(board.D14)
-
-def DHT22_data():
+def DHT22_data(dhtDevice):
 	for i in range(10):
 		try:
 			# Reading from DHT22 and storing the temperature and humidity
